@@ -30,6 +30,7 @@ function LoginPage(){
         <Typography variant="h5" textAlign="center"  fontWeight="bold" mb={2}>
           Welcome to Dataprimo
         </Typography>
+        
         <Box
           display="flex"
           justifyContent="center"
