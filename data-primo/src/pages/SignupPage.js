@@ -40,7 +40,32 @@ function SignupPage() {
         borderRadius={2}
         boxShadow="0 2px 10px rgba(0,0,0,0.1)"
       >
-        <Typography variant="h5" textAlign="center" mb={2} fontWeight="bold">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mb={2}
+        >
+        {/* <Typography variant="h5" textAlign="center"  fontWeight="bold" mr={1}>
+          Welcome to 
+        </Typography> */}
+          <Box
+            width={170}
+            height={40}
+            bgcolor="black"
+            color="white"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            fontWeight="bold"
+            fontSize={28}
+            borderRadius={4}
+          >
+            Dataprimo
+          </Box>
+        </Box>
+        
+        <Typography variant="h5" textAlign="center" mb={2} fontWeight="bold" color="purple">
           Sign Up
         </Typography>
         <Grid container spacing={2}>
