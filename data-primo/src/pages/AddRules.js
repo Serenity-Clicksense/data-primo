@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Typography, TextField, IconButton, List, ListItem, ListItemText, Divider } from "@mui/material";
+import { Box, Typography, TextField, IconButton, List, ListItem, ListItemText, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditIcon from "@mui/icons-material/Edit";
 
 function AddRules() {
   // States to manage the rules list, search term, and input fields
@@ -12,13 +13,21 @@ function AddRules() {
   const [ruleName, setRuleName] = useState("");
   const [sqlString, setSqlString] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(null); // Track the selected rule index
 
-  // Add a new rule
+  // Add a new rule or update an existing rule
   const handleAddRule = () => {
     if (ruleName && sqlString) {
-      setRules([...rules, { ruleName, sqlString }]);
-      setRuleName(""); // Clear input after adding
-      setSqlString(""); // Clear input after adding
+      if (selectedIndex === null) {
+        // If no rule is selected, add a new rule
+        setRules([...rules, { ruleName, sqlString }]);
+      } else {
+        // If a rule is selected, update the existing rule
+        const updatedRules = [...rules];
+        updatedRules[selectedIndex] = { ruleName, sqlString };
+        setRules(updatedRules);
+      }
+      resetForm(); // Reset form after adding/updating
     }
   };
 
@@ -37,6 +46,20 @@ function AddRules() {
   // Handle input change for SQL string (to manage line breaks)
   const handleSqlChange = (e) => {
     setSqlString(e.target.value);
+  };
+
+  // Handle rule edit to populate fields for editing
+  const handleEditRule = (index) => {
+    setSelectedIndex(index); // Set the selected rule index
+    setRuleName(rules[index].ruleName); // Populate rule name field
+    setSqlString(rules[index].sqlString); // Populate SQL string field
+  };
+
+  // Reset the form (for adding new rule or canceling edit)
+  const resetForm = () => {
+    setRuleName("");
+    setSqlString("");
+    setSelectedIndex(null); // Reset selected index when form is reset
   };
 
   return (
@@ -82,16 +105,22 @@ function AddRules() {
               <Box sx={{ width: "45%" }}>
                 <ListItemText secondary={rule.sqlString} />
               </Box>
-              <IconButton onClick={() => handleDeleteRule(index)}>
-                <DeleteIcon />
-              </IconButton>
+              <Box display="flex" alignItems="center">
+                {/* Edit Icon Button */}
+                <IconButton onClick={() => handleEditRule(index)}>
+                  <EditIcon />
+                </IconButton>
+                {/* Delete Icon Button */}
+                <IconButton onClick={() => handleDeleteRule(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
             </ListItem>
           ))}
         </List>
-        {/* <Divider /> */}
       </Box>
 
-      {/* Input fields for adding new rule */}
+      {/* Input fields for adding or editing a rule */}
       <Box width="80%" display="flex" gap={2} mb={3}>
         <TextField
           label="Rule Name"
@@ -115,13 +144,21 @@ function AddRules() {
           minRows={4} // Set minimum rows for visibility
           sx={{ width: "100%" }}
         />
-        <IconButton
-          onClick={handleAddRule}
-          color="primary"
-        >
-          <AddCircleIcon fontSize="large" />
+        <IconButton onClick={handleAddRule} color="primary">
+          {selectedIndex === null ? (
+            <AddCircleIcon fontSize="large" />
+          ) : (
+            <EditIcon fontSize="large" />
+          )}
         </IconButton>
       </Box>
+
+      {/* Cancel Button to Reset to Add New Rule */}
+      {selectedIndex !== null && (
+        <Button onClick={resetForm} color="secondary" variant="outlined">
+          Cancel Edit
+        </Button>
+      )}
     </Box>
   );
 }
