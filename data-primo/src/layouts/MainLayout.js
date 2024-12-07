@@ -28,7 +28,7 @@ function MainLayout() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       {/* Navbar */}
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <Typography
             variant="h5"

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Box, Typography, TextField, Button, IconButton, List, ListItem, ListItemText, Divider } from "@mui/material";
+import { Box, Typography, TextField, IconButton, List, ListItem, ListItemText, Divider } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 function ManageCategories() {
-  const [categories, setCategories] = useState(["Category 1", "Category 2", "Category 3"]); // Example categories
+  const [categories, setCategories] = useState(["Category 1", "Category 2", "Category 3"]);
   const [newCategory, setNewCategory] = useState("");
   const [search, setSearch] = useState("");
 
@@ -28,13 +28,14 @@ function ManageCategories() {
       display="flex"
       flexDirection="column"
       alignItems="center"
+      justifyContent="top"
       minHeight="100vh"
       bgcolor="#f9f9f9"
       p={2}
       borderRadius={4}
     >
       {/* Title Section */}
-      <Typography variant="h4" fontWeight="bold" mb={2}>
+      <Typography variant="h4" fontWeight="bold" mb={3}>
         Manage Categories
       </Typography>
 
@@ -45,25 +46,31 @@ function ManageCategories() {
         fullWidth
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        sx={{ mb: 2 }}
+        sx={{ maxWidth: "600px", mb: 3 }}
       />
 
       {/* Categories List */}
-      <List sx={{ width: "100%", maxHeight: "400px", overflowY: "auto" }}>
-        {filteredCategories.map((category, index) => (
-          <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
-            <ListItemText primary={category} />
-            <IconButton onClick={() => handleDeleteCategory(category)} edge="end">
-              <DeleteIcon />
-            </IconButton>
-          </ListItem>
-        ))}
-      </List>
-
-      <Divider sx={{ width: "100%", my: 2 }} />
+      <Box width="80%" mb={3} display="flex" flexDirection="column" gap={2}>
+        <List sx={{ maxHeight: "400px", overflowY: "auto" }}>
+          {filteredCategories.map((category, index) => (
+            <ListItem key={index} sx={{ borderBottom: "1px solid #ddd",
+                paddingY: 2,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center", }}>
+              <Box sx={{ width: "45%" }}>
+                <ListItemText primary={category} />
+              </Box>
+              <IconButton onClick={() => handleDeleteCategory(category)} edge="end">
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
 
       {/* Add Category Section */}
-      <Box display="flex" alignItems="center" width="100%">
+      <Box display="flex" alignItems="center" width="80%">
         <TextField
           label="Add Category"
           variant="outlined"
@@ -71,7 +78,7 @@ function ManageCategories() {
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
         />
-        <IconButton onClick={handleAddCategory} sx={{ ml: 2 }}>
+        <IconButton onClick={handleAddCategory} sx={{ ml: 2 }} color="primary">
           <AddCircleIcon fontSize="large" />
         </IconButton>
       </Box>

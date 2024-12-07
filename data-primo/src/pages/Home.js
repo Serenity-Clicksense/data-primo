@@ -6,11 +6,15 @@ import DatabaseIcon from "@mui/icons-material/Storage";
 import { useNavigate } from "react-router-dom";
 
 
+
 function Home() {
     const navigate = useNavigate();
 
     const handleManageCategories=()=>{
         navigate("/manageCategories");
+    }
+    const handleAddRules=()=>{
+        navigate("/addRules");
     }
 
   return (
@@ -70,6 +74,7 @@ function Home() {
               transform: "scale(1.1)", // Zoom effect
             },
           }}
+          onClick={handleAddRules}
         >
           <AddCircleOutlineIcon sx={{ fontSize: 50, mb: 1 }} />
           Add Rules

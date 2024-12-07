@@ -5,6 +5,8 @@ import SignupPage from "./pages/SignupPage";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import ManageCategories from "./pages/ManageCategories";
+import AddRules from "./pages/AddRules";
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="/manageCategories" element={<ManageCategories />}/>
+            <Route path="/addRules" element={<AddRules />}/>
           </Route>
       </Routes>
     </Router>
