@@ -3,19 +3,25 @@ import { Box, Typography, Button } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CategoryIcon from "@mui/icons-material/Category";
 import DatabaseIcon from "@mui/icons-material/Storage";
+import GavelIcon from "@mui/icons-material/Gavel";
 import { useNavigate } from "react-router-dom";
-
-
+import ManageDatabaseConnection from "./ManageDatabaseConnection";
 
 function Home() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleManageCategories=()=>{
-        navigate("/manageCategories");
-    }
-    const handleAddRules=()=>{
-        navigate("/addRules");
-    }
+  const handleManageCategories = () => {
+    navigate("/manageCategories");
+  };
+  const handleAddRules = () => {
+    navigate("/addRules");
+  };
+  const handleApplyRules = () => {
+    navigate("/applyRules");
+  };
+  const handleManageDatabaseConnection = () => {
+    navigate("/manageDatabaseConnection");
+  };
 
   return (
     <Box
@@ -94,7 +100,6 @@ function Home() {
             textTransform: "capitalize",
             transition: "transform 0.3s ease",
             background: "linear-gradient(90deg, #56CCF2, #2F80ED)",
-            
             "&:hover": {
               transform: "scale(1.1)", // Zoom effect
             },
@@ -124,9 +129,35 @@ function Home() {
               transform: "scale(1.1)", // Zoom effect
             },
           }}
+          onClick={handleManageDatabaseConnection}
         >
           <DatabaseIcon sx={{ fontSize: 50, mb: 1 }} />
           Manage Database
+        </Button>
+
+        {/* Apply Rules Button */}
+        <Button
+          variant="contained"
+          color="success"
+          sx={{
+            height: "180px",
+            width: "220px",
+            fontSize: "18px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textTransform: "capitalize",
+            transition: "transform 0.3s ease",
+            background: "linear-gradient(90deg, #56CCF2, #2F80ED)",
+            "&:hover": {
+              transform: "scale(1.1)", // Zoom effect
+            },
+          }}
+          onClick={handleApplyRules}
+        >
+          <GavelIcon sx={{ fontSize: 50, mb: 1 }} />
+          Apply Rules
         </Button>
       </Box>
     </Box>

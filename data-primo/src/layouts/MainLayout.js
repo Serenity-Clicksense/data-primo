@@ -1,7 +1,16 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, IconButton, Box, Menu, MenuItem } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Box,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function MainLayout() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -38,6 +47,15 @@ function MainLayout() {
           >
             Dataprimo
           </Typography>
+          <IconButton
+            edge="end"
+            color="inherit"
+            aria-label="home"
+            sx={{ mr: 2 }} // Add spacing between Home and Profile icons
+            onClick={handleNavigateHome}
+          >
+            <HomeIcon />
+          </IconButton>
           <IconButton
             edge="end"
             color="inherit"

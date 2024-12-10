@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import ManageCategories from "./pages/ManageCategories";
 import AddRules from "./pages/AddRules";
 import ApplyRules from "./pages/ApplyRules";
+import ManageDatabaseConnection from "./pages/ManageDatabaseConnection";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/manageCategories" element={<ManageCategories />} />
             <Route path="/addRules" element={<AddRules />} />
             <Route path="/applyRules" element={<ApplyRules />} />
+            <Route path="/manageDatabaseConnection" element={<ManageDatabaseConnection />} />
           </Route>
       </Routes>
     </Router>
