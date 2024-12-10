@@ -3,12 +3,20 @@ import { Box, Button, TextField, Typography, Link, InputAdornment, IconButton } 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage(){
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const handleLogin = () => {
+    //authentication logic 
+   
+    navigate("/"); 
   };
 
   return (
@@ -20,6 +28,7 @@ function LoginPage(){
       minHeight="100vh"
       bgcolor="#f9f9f9"
     >
+      
       <Box
         width={300}
         p={4}
@@ -27,9 +36,37 @@ function LoginPage(){
         borderRadius={2}
         boxShadow="0 2px 10px rgba(0,0,0,0.1)"
       >
-        <Typography variant="h5" textAlign="center"  fontWeight="bold" mb={2}>
-          Welcome to Dataprimo
+        
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mb={2}
+        >
+        {/* <Typography variant="h5" textAlign="center"  fontWeight="bold" mr={1}>
+          Welcome to 
+        </Typography> */}
+          <Box
+            width={170}
+            height={40}
+            bgcolor="black"
+            color="white"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            fontWeight="bold"
+            fontSize={28}
+            borderRadius={4}
+          >
+            Dataprimo
+          </Box>
+        </Box>
+        
+        
+        <Typography variant="h5" textAlign="center"  fontWeight="bold" mb={2} color="purple">
+          Login
         </Typography>
+        
         <Box
           display="flex"
           justifyContent="center"
@@ -68,6 +105,7 @@ function LoginPage(){
             mt: 2,
             mb: 1,
           }}
+          onClick={handleLogin}
         >
           LOGIN
         </Button>
