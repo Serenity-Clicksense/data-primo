@@ -15,7 +15,7 @@ function LoginPage(){
 
   const handleLogin = () => {
     //authentication logic 
-
+   
     navigate("/"); 
   };
 

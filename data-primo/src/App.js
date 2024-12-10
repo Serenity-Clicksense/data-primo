@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import ManageCategories from "./pages/ManageCategories";
 import AddRules from "./pages/AddRules";
+import ApplyRules from "./pages/ApplyRules";
 
 
 function App() {
@@ -16,8 +17,9 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
-            <Route path="/manageCategories" element={<ManageCategories />}/>
-            <Route path="/addRules" element={<AddRules />}/>
+            <Route path="/manageCategories" element={<ManageCategories />} />
+            <Route path="/addRules" element={<AddRules />} />
+            <Route path="/applyRules" element={<ApplyRules />} />
           </Route>
       </Routes>
     </Router>
