@@ -5,7 +5,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import DatabaseIcon from "@mui/icons-material/Storage";
 import GavelIcon from "@mui/icons-material/Gavel";
 import { useNavigate } from "react-router-dom";
-import ManageDatabaseConnection from "./ManageDatabaseConnection";
+
 
 function Home() {
   const navigate = useNavigate();
@@ -13,8 +13,8 @@ function Home() {
   const handleManageCategories = () => {
     navigate("/manageCategories");
   };
-  const handleAddRules = () => {
-    navigate("/addRules");
+  const handleManageRules = () => {
+    navigate("/manageRules");
   };
   const handleApplyRules = () => {
     navigate("/applyRules");
@@ -80,10 +80,10 @@ function Home() {
               transform: "scale(1.1)", // Zoom effect
             },
           }}
-          onClick={handleAddRules}
+          onClick={handleManageRules}
         >
           <AddCircleOutlineIcon sx={{ fontSize: 50, mb: 1 }} />
-          Add Rules
+          Manage Rules
         </Button>
 
         {/* Manage Categories Button */}
