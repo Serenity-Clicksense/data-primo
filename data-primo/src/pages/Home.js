@@ -13,8 +13,8 @@ function Home() {
   const handleManageCategories = () => {
     navigate("/manageCategories");
   };
-  const handleAddRules = () => {
-    navigate("/addRules");
+  const handleManageRules = () => {
+    navigate("/manageRules");
   };
   const handleApplyRules = () => {
     navigate("/applyRules");
@@ -80,10 +80,10 @@ function Home() {
               transform: "scale(1.1)", // Zoom effect
             },
           }}
-          onClick={handleAddRules}
+          onClick={handleManageRules}
         >
           <AddCircleOutlineIcon sx={{ fontSize: 50, mb: 1 }} />
-          Add Rules
+          Manage Rules
         </Button>
 
         {/* Manage Categories Button */}

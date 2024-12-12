@@ -5,7 +5,7 @@ import SignupPage from "./pages/SignupPage";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import ManageCategories from "./pages/ManageCategories";
-import AddRules from "./pages/AddRules";
+import ManageRules from "./pages/ManageRules";
 import ApplyRules from "./pages/ApplyRules";
 import ManageDatabaseConnection from "./pages/ManageDatabaseConnection";
 
@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="/manageCategories" element={<ManageCategories />} />
-            <Route path="/addRules" element={<AddRules />} />
+            <Route path="/manageRules" element={<ManageRules />} />
             <Route path="/applyRules" element={<ApplyRules />} />
             <Route path="/manageDatabaseConnection" element={<ManageDatabaseConnection />} />
           </Route>
