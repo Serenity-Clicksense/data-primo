@@ -14,7 +14,7 @@ function ManageCategories() {
       "Date Format Checks",
       "Email and Null Checks",
       "Comparison Checks",
-      "Uniqueness and Integrity Checks",
+      "Data Integrity Checks",
       "Custom Checks"
     ];
   });

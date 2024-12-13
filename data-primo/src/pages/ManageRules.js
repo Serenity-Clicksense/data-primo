@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Typography, TextField, IconButton, List, ListItem, ListItemText, Button } from "@mui/material";
+import { Box, Typography, TextField, IconButton, List, ListItem, ListItemText, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -10,63 +9,78 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 const initialRules = [
   {
     rule_description: "Check for alphabetic data",
-    rule_query: "select COUNT() AS total_records, SUM(IF(@column_name@ REGEXP '^[A-Za-z]$', 0, 1)) AS failed_records, SUM(IF(@column_name@ REGEXP '^[A-Za-z]*$', 1, 0)) AS passed_records FROM temp_view;"
+    rule_query: "select COUNT() AS total_records, SUM(IF(@column_name@ REGEXP '^[A-Za-z]$', 0, 1)) AS failed_records, SUM(IF(@column_name@ REGEXP '^[A-Za-z]*$', 1, 0)) AS passed_records FROM temp_view;",
+    category: "Data Type Checks"
   },
   {
     rule_description: "Check for alphanumeric data",
-    rule_query: "select COUNT() AS total_records, SUM(IF(@column_name@ REGEXP '^[a-zA-Z0-9]$', 0, 1)) AS failed_records, SUM(IF(@column_name@ REGEXP '^[a-zA-Z0-9]*$', 1, 0)) AS passed_records FROM temp_view;"
+    rule_query: "select COUNT() AS total_records, SUM(IF(@column_name@ REGEXP '^[a-zA-Z0-9]$', 0, 1)) AS failed_records, SUM(IF(@column_name@ REGEXP '^[a-zA-Z0-9]*$', 1, 0)) AS passed_records FROM temp_view;",
+    category: "Data Type Checks"
   },
   {
     rule_description: "Check for Numeric data",
-    rule_query: "select COUNT() AS total_records, SUM(IF(@column_name@ REGEXP '^[0-9]$', 0, 1)) AS failed_records, SUM(IF(@column_name@ REGEXP '^[0-9]*$', 1, 0)) AS passed_records FROM temp_view;"
+    rule_query: "select COUNT() AS total_records, SUM(IF(@column_name@ REGEXP '^[0-9]$', 0, 1)) AS failed_records, SUM(IF(@column_name@ REGEXP '^[0-9]*$', 1, 0)) AS passed_records FROM temp_view;",
+    category: "Data Type Checks"
   },
   {
     rule_description: "Date format MM/DD/YY",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',1,0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',1,0)) as passed_records from temp_view;",
+    category: "Date Format Checks"
   },
   {
     rule_description: "Date format YYYY-MM-DD",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',1,0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',1,0)) as passed_records from temp_view;",
+    category: "Date Format Checks"
   },
   {
     rule_description: "Email check",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '[a-zA-Z0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '[a-zA-Z0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',1,0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '[a-zA-Z0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '[a-zA0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',1,0)) as passed_records from temp_view;",
+    category: "Pattern Checks"
   },
   {
     rule_description: "Empty check",
-    rule_query: "select count(*) as total_records, sum(if(@column_name@='',1,0)) as failed_records, sum(if(@column_name@='',0,1)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records, sum(if(@column_name@='',1,0)) as failed_records, sum(if(@column_name@='',0,1)) as passed_records from temp_view;",
+    category: "Data Integrity Checks"
   },
   {
     rule_description: "Greater than",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ > @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ > @parameter_1@, 1, 0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ > @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ > @parameter_1@, 1, 0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
   },
   {
     rule_description: "Greater than or equal",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ >= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ >= @parameter_1@, 1,0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ >= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ >= @parameter_1@, 1,0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
   },
   {
     rule_description: "Less than",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ < @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ < @parameter_1@, 1, 0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ < @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ < @parameter_1@, 1, 0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
   },
   {
     rule_description: "Less than or equal",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ <= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ <= @parameter_1@, 1, 0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ <= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ <= @parameter_1@, 1, 0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
   },
   {
     rule_description: "Not equal",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ <> @parameter_1@, 1, 0)) as failed_records, sum(if(@column_name@ <> @parameter_1@, 0, 1)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ <> @parameter_1@, 1, 0)) as failed_records, sum(if(@column_name@ <> @parameter_1@, 0, 1)) as passed_records from temp_view;",
+    category: "Comparison Checks"
   },
   {
     rule_description: "Null check",
-    rule_query: "select count(*) as total_records, sum(if(@column_name@ is null,1,0)) as failed_records, sum(if(@column_name@ is not null,1,0)) as passed_records from temp_view;"
+    rule_query: "select count(*) as total_records, sum(if(@column_name@ is null,1,0)) as failed_records, sum(if(@column_name@ is not null,1,0)) as passed_records from temp_view;",
+    category: "Data Integrity Checks"
   },
   {
     rule_description: "Unique check",
-    rule_query: "select COUNT() AS total_records,COUNT() - COUNT(distinct @column_name@) AS failed_records, COUNT(distinct @column_name@) AS passed_records FROM temp_view;"
+    rule_query: "select COUNT() AS total_records,COUNT() - COUNT(distinct @column_name@) AS failed_records, COUNT(distinct @column_name@) AS passed_records FROM temp_view;",
+    category: "Data Integrity Checks"
   },
   {
     rule_description: "Custom check",
-    rule_query: "This is only a placeholder, as this won’t be parsed during execution."
+    rule_query: "This is only a placeholder, as this won’t be parsed during execution.",
+    category: "Custom Checks"
   }
 ];
 
@@ -77,12 +91,24 @@ function ManageRules() {
   });
   const [ruleDescription, setRuleDescription] = useState("");
   const [ruleQuery, setRuleQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Custom Checks");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false); // State to toggle the list expansion
   const [showExpandButton, setShowExpandButton] = useState(false); // To toggle visibility of Expand button
 
   const listRef = useRef(null); // Ref to track the list height
+
+  // Fetch categories from localStorage, or default to an empty array
+  const [categories] = useState(() => {
+    const storedCategories = localStorage.getItem("categories");
+    return storedCategories ? JSON.parse(storedCategories) : ["Data Type Checks",
+      "Date Format Checks",
+      "Email and Null Checks",
+      "Comparison Checks",
+      "Data Integrity Checks",
+      "Custom Checks"];
+  });
 
   // Save the rules to localStorage whenever rules state changes
   useEffect(() => {
@@ -101,10 +127,10 @@ function ManageRules() {
   const handleAddRule = () => {
     if (ruleDescription && ruleQuery) {
       if (selectedIndex === null) {
-        setRules([...rules, { rule_description: ruleDescription, rule_query: ruleQuery }]);
+        setRules([...rules, { rule_description: ruleDescription, rule_query: ruleQuery, category: selectedCategory }]);
       } else {
         const updatedRules = [...rules];
-        updatedRules[selectedIndex] = { rule_description: ruleDescription, rule_query: ruleQuery };
+        updatedRules[selectedIndex] = { rule_description: ruleDescription, rule_query: ruleQuery, category: selectedCategory };
         setRules(updatedRules);
       }
       resetForm();
@@ -133,12 +159,14 @@ function ManageRules() {
     setSelectedIndex(index); 
     setRuleDescription(rules[index].rule_description);
     setRuleQuery(rules[index].rule_query);
+    setSelectedCategory(rules[index].category);
   };
 
   // Reset the form (for adding new rule or canceling edit)
   const resetForm = () => {
     setRuleDescription("");
     setRuleQuery("");
+    setSelectedCategory("Custom Checks");
     setSelectedIndex(null);
   };
 
@@ -186,10 +214,9 @@ function ManageRules() {
           }}
         >
           <Box sx={{ width: "35%", ml: 2 }}>Rule Description</Box>
-          <Box sx={{ width: "55%" }}>Rule Query</Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mr: 6 }}>
-            Actions
-          </Box>
+          <Box sx={{ width: "30%" }}>Category</Box>
+          <Box sx={{ width: "30%" }}>Rule Query</Box>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mr: 6 }}>Actions</Box>
         </Box>
 
         <List
@@ -214,8 +241,13 @@ function ManageRules() {
               <Box sx={{ width: "35%" }}>
                 <ListItemText primary={rule.rule_description} />
               </Box>
-              <Box sx={{ width: "55%" }}>
-                <ListItemText secondary={rule.rule_query} />
+              <Box sx={{ width: "30%" }}>
+                <ListItemText secondary={rule.category} />
+              </Box>
+              <Box sx={{ width: "30%" }}>
+                <Typography variant="body2" color="textSecondary" sx={{ whiteSpace: "pre-wrap" }}>
+                  {rule.rule_query}
+                </Typography>
               </Box>
               <Box display="flex" alignItems="center">
                 {/* Edit Icon Button */}
@@ -252,6 +284,24 @@ function ManageRules() {
         )}
       </Box>
 
+      {/* Dropdown for Category */}
+      <Box width="80%" display="flex" gap={2} mb={3}>
+        <FormControl fullWidth>
+          <InputLabel>Category</InputLabel>
+          <Select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            label="Category"
+          >
+            {categories.map((category, index) => (
+              <MenuItem key={index} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+
       {/* Add or Edit Rule Section */}
       <Box width="80%" display="flex" gap={2} mb={3}>
         <TextField
@@ -269,25 +319,32 @@ function ManageRules() {
         <TextField
           label="Rule Query"
           variant="outlined"
-          size="small"
+          multiline
+          rows={4}
           value={ruleQuery}
           onChange={handleRuleQueryChange}
-          multiline
-          minRows={4} // Set minimum rows for visibility
           sx={{ width: "100%" }}
         />
-        <IconButton onClick={handleAddRule} color="primary">
-          {selectedIndex === null ? (
-            <AddCircleIcon fontSize="large" />
-          ) : (
-            <EditIcon fontSize="large" />
-          )}
-        </IconButton>
       </Box>
 
-      {/* Cancel Button to Reset to Add New Rule */}
+      {/* Add/Save Button */}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleAddRule}
+        sx={{ width: "80%", padding: "12px" }}
+      >
+        {selectedIndex === null ? "Add Rule" : "Save Rule"}
+      </Button>
+
+      {/* Cancel Edit Button */}
       {selectedIndex !== null && (
-        <Button onClick={resetForm} color="secondary" variant="outlined">
+        <Button
+          variant="contained"
+          color="error"
+          onClick={resetForm}
+          sx={{ width: "80%", padding: "12px", mt: 2 }}
+        >
           Cancel Edit
         </Button>
       )}
