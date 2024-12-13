@@ -48,8 +48,8 @@ function ApplyRules() {
     <Box
       display="flex"
       flexDirection="column"
-      alignItems="flex-start"  // Align inputs to the left
-      justifyContent="center"
+      alignItems="center"  // Align inputs to the left
+      justifyContent="flext-start"
       minHeight="100vh"
       bgcolor="#f9f9f9"
       p={4}
