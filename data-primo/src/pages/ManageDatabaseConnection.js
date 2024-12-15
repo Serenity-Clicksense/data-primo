@@ -21,7 +21,7 @@ function ManageDatabaseConnection() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         minHeight: "100vh",
         bgcolor: "#f9f9f9",
         p: 3,

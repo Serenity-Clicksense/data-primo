@@ -5,6 +5,8 @@ import CategoryIcon from "@mui/icons-material/Category";
 import DatabaseIcon from "@mui/icons-material/Storage";
 import GavelIcon from "@mui/icons-material/Gavel";
 import { useNavigate } from "react-router-dom";
+import logo1 from "../assets/logo1.png";
+
 
 
 function Home() {
@@ -36,7 +38,7 @@ function Home() {
         <Typography variant="h4" textAlign="center" fontWeight="bold" mr={1}>
           Welcome to
         </Typography>
-        <Box
+        {/* <Box
           width={175}
           height={50}
           bgcolor="black"
@@ -49,7 +51,12 @@ function Home() {
           borderRadius={4}
         >
           Dataprimo
-        </Box>
+        </Box> */}
+        <img
+            src={logo1}  // Using the imported logo here
+            alt="Dataprimo"
+            style={{ height: '50px', width:'auto', marginLeft:"-30px" }}  // Adjust size as needed
+        />
       </Box>
 
       {/* Buttons Section */}

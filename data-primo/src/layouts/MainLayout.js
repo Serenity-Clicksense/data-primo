@@ -11,6 +11,8 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
 import { Outlet, useNavigate } from "react-router-dom";
+import logo1 from "../assets/logo1.png";
+import logo2 from "../assets/logo2.png";
 
 function MainLayout() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -37,7 +39,7 @@ function MainLayout() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       {/* Navbar */}
-      <AppBar position="sticky">
+      <AppBar position="sticky" sx={{ backgroundColor: '#56CCF2'}}>
         <Toolbar>
           <Typography
             variant="h5"
@@ -45,11 +47,20 @@ function MainLayout() {
             sx={{ flexGrow: 1, cursor: "pointer" }}
             onClick={handleNavigateHome}
           >
-            Dataprimo
+          <img
+            src={logo2}  // Using the imported logo here
+            alt="Dataprimo"
+            style={{ height: '35px', width:'auto', marginLeft:"-15px"}}  // Adjust size as needed
+          />
+          <img
+            src={logo1}  // Using the imported logo here
+            alt="Dataprimo"
+            style={{ height: '35px', width:'auto', marginLeft:"-20px" }}  // Adjust size as needed
+          />
           </Typography>
           <IconButton
             edge="end"
-            color="inherit"
+            color="#F5F5F5"
             aria-label="home"
             sx={{ mr: 2 }} // Add spacing between Home and Profile icons
             onClick={handleNavigateHome}
@@ -58,7 +69,7 @@ function MainLayout() {
           </IconButton>
           <IconButton
             edge="end"
-            color="inherit"
+            color="#F5F5F5"
             aria-label="profile"
             onClick={handleMenuOpen}
           >
