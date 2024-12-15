@@ -12,9 +12,9 @@ function ManageCategories() {
     return storedCategories ? JSON.parse(storedCategories) : [
       "Data Type Checks",
       "Date Format Checks",
-      "Email and Null Checks",
+      "Pattern Checks",
       "Comparison Checks",
-      "Uniqueness and Integrity Checks",
+      "Data Integrity Checks",
       "Custom Checks"
     ];
   });
@@ -124,41 +124,41 @@ function ManageCategories() {
           </Box>
         </Box>
 
-        <List
-          ref={listRef}
-          sx={{
-            maxHeight: isExpanded ? "400px" : "220px", // Toggle list height
-            overflowY: "auto",
-            transition: "max-height 0.3s ease-in-out", // Smooth transition for expansion
-          }}
-        >
-          {filteredCategories.map((category, index) => (
-            <ListItem
-              key={index}
-              sx={{
-                borderBottom: "1px solid #ddd",
-                paddingY: 2,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box sx={{ width: "45%" }}>
-                <ListItemText primary={category} />
-              </Box>
-              <Box display="flex" alignItems="center">
-                {/* Edit Icon Button */}
-                <IconButton onClick={() => handleEditCategory(index)}>
-                  <EditIcon />
-                </IconButton>
-                {/* Delete Icon Button */}
-                <IconButton onClick={() => handleDeleteCategory(category)} edge="end">
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
+          <List
+            ref={listRef}
+            sx={{
+              maxHeight: isExpanded ? "400px" : "220px", // Toggle list height
+              overflowY: "auto",
+              transition: "max-height 0.3s ease-in-out", // Smooth transition for expansion
+            }}
+          >
+            {filteredCategories.map((category, index) => (
+              <ListItem
+                key={index}
+                sx={{
+                  borderBottom: "1px solid #ddd",
+                  paddingY: 2,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Box sx={{ width: "45%" }}>
+                  <ListItemText primary={category} />
+                </Box>
+                <Box display="flex" alignItems="center">
+                  {/* Edit Icon Button */}
+                  <IconButton onClick={() => handleEditCategory(index)}>
+                    <EditIcon />
+                  </IconButton>
+                  {/* Delete Icon Button */}
+                  <IconButton onClick={() => handleDeleteCategory(category)} edge="end">
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              </ListItem>
+            ))}
+          </List>
 
         {/* Only show the Expand/Collapse button if content overflows */}
         {showExpandButton && (
