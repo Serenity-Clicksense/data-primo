@@ -12,7 +12,7 @@ function ManageCategories() {
     return storedCategories ? JSON.parse(storedCategories) : [
       "Data Type Checks",
       "Date Format Checks",
-      "Email and Null Checks",
+      "Pattern Checks",
       "Comparison Checks",
       "Data Integrity Checks",
       "Custom Checks"
