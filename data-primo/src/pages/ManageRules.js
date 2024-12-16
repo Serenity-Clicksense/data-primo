@@ -18,7 +18,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
-// Default initial rules (used when no data is found in localStorage)
 const initialRules = [
   {
     rule_description: "Check for alphabetic data",
@@ -39,6 +38,61 @@ const initialRules = [
     rule_description: "Date format MM/DD/YY",
     rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',1,0)) as passed_records from temp_view;",
     category: "Date Format Checks"
+  },
+  {
+    rule_description: "Date format YYYY-MM-DD",
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',1,0)) as passed_records from temp_view;",
+    category: "Date Format Checks"
+  },
+  {
+    rule_description: "Email check",
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '[a-zA-Z0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '[a-zA0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',1,0)) as passed_records from temp_view;",
+    category: "Pattern Checks"
+  },
+  {
+    rule_description: "Empty check",
+    rule_query: "select count(*) as total_records, sum(if(@column_name@='',1,0)) as failed_records, sum(if(@column_name@='',0,1)) as passed_records from temp_view;",
+    category: "Data Integrity Checks"
+  },
+  {
+    rule_description: "Greater than",
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ > @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ > @parameter_1@, 1, 0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
+  },
+  {
+    rule_description: "Greater than or equal",
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ >= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ >= @parameter_1@, 1,0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
+  },
+  {
+    rule_description: "Less than",
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ < @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ < @parameter_1@, 1, 0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
+  },
+  {
+    rule_description: "Less than or equal",
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ <= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ <= @parameter_1@, 1, 0)) as passed_records from temp_view;",
+    category: "Comparison Checks"
+  },
+  {
+    rule_description: "Not equal",
+    rule_query: "select count(*) as total_records,sum(if(@column_name@ <> @parameter_1@, 1, 0)) as failed_records, sum(if(@column_name@ <> @parameter_1@, 0, 1)) as passed_records from temp_view;",
+    category: "Comparison Checks"
+  },
+  {
+    rule_description: "Null check",
+    rule_query: "select count(*) as total_records, sum(if(@column_name@ is null,1,0)) as failed_records, sum(if(@column_name@ is not null,1,0)) as passed_records from temp_view;",
+    category: "Data Integrity Checks"
+  },
+  {
+    rule_description: "Unique check",
+    rule_query: "select COUNT() AS total_records,COUNT() - COUNT(distinct @column_name@) AS failed_records, COUNT(distinct @column_name@) AS passed_records FROM temp_view;",
+    category: "Data Integrity Checks"
+  },
+  {
+    rule_description: "Custom check",
+    rule_query: "This is only a placeholder, as this won’t be parsed during execution.",
+    category: "Custom Checks"
   }
 ];
 
@@ -209,8 +263,23 @@ function ManageRules() {
                   sx={{
                     whiteSpace: "pre-wrap",
                     overflowY: "auto",
-                    maxHeight: "60px", // Set a reduced fixed height for the rule query
+                    maxHeight: "80px", // Set a fixed height for the rule query
                     display: "block",
+                    "&::-webkit-scrollbar": {
+                      width: "6px", // Make the scrollbar thinner
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1", // Scrollbar track color
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888", // Scrollbar thumb color
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555", // Scrollbar thumb hover color
+                    },
+                    scrollbarWidth: "thin", // For Firefox
                   }}
                 >
                   {rule.rule_query}

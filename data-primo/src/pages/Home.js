@@ -57,7 +57,7 @@ function Home() {
         {/* Vision Card */}
         <Card
           sx={{
-            width: "220px", // Same width as buttons
+            width: "440px", // Same width as buttons
             height: "180px", // Same height as buttons
             boxShadow: 3,
             borderRadius: "12px",
@@ -75,27 +75,18 @@ function Home() {
           >
             Vision
           </Typography>
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body1" color="textSecondary">
             "To be the trusted source of accurate and reliable data, empowering
             informed decisions and driving business excellence."
           </Typography>
         </Card>
 
-        {/* Tagline */}
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          textAlign="center"
-          color="textSecondary"
-          sx={{ minWidth: 200 }}
-        >
-          Your Data in Focus
-        </Typography>
+
 
         {/* Mission Card */}
         <Card
           sx={{
-            width: "220px", // Same width as buttons
+            width: "440px", // Same width as buttons
             height: "180px", // Same height as buttons
             boxShadow: 3,
             borderRadius: "12px",
@@ -113,13 +104,32 @@ function Home() {
           >
             Mission
           </Typography>
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body1" color="textSecondary">
             "To ensure the highest standards of data integrity and accuracy
             through continuous improvement, innovative solutions, and a
             commitment to excellence in data management."
           </Typography>
         </Card>
       </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={4}
+        mb={5}
+      >
+        {/* Tagline */}
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            textAlign="center"
+            color="textSecondary"
+            sx={{ minWidth: 200 }}
+          >
+            Your Data in Focus
+          </Typography>
+      </Box>
+              
 
       {/* Buttons Section */}
       <Box

@@ -18,6 +18,7 @@ import {
   IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete"; // Import Delete icon
 
 // Default initial rules
 const initialRules = [
@@ -137,6 +138,29 @@ function ApplyRules() {
     setEditingIndex(index); // Set the index to indicate we're editing
   };
 
+  // Handle canceling the edit
+  const handleCancelEdit = () => {
+    // Reset the form fields and exit edit mode
+    setCategory("");
+    setRuleDescription("");
+    setTableName("");
+    setColumnName("");
+    setColumnRuleParameter("");
+    setEditingIndex(null); // Reset editing index
+  };
+
+  // Handle deleting an entry
+  const handleDelete = (index) => {
+    let updatedData = [...submittedData];
+    updatedData.splice(index, 1); // Remove the entry at the specified index
+
+    // Save updated data to localStorage
+    localStorage.setItem("submittedData", JSON.stringify(updatedData));
+
+    // Update state with the new list
+    setSubmittedData(updatedData);
+  };
+
   return (
     <Box
       display="flex"
@@ -150,123 +174,142 @@ function ApplyRules() {
       <Typography variant="h4" fontWeight="bold" mb={5}>
         Apply Rules
       </Typography>
+      <Box display="flex" gap={4} justifyContent="center" mb={3}>
+        {/* Category Dropdown */}
+        <FormControl sx={{ width: "300px" }} variant="outlined" required>
+          <InputLabel id="category-label">Category</InputLabel>
+          <Select
+            labelId="category-label"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            label="Category *"
+          >
+            {categories.map((cat, index) => (
+              <MenuItem key={index} value={cat}>
+                {cat}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      {/* Category Dropdown */}
-      <FormControl sx={{ width: "400px", mb: 3 }} variant="outlined" required>
-        <InputLabel id="category-label">Category *</InputLabel>
-        <Select
-          labelId="category-label"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          label="Category *"
-        >
-          {categories.map((cat, index) => (
-            <MenuItem key={index} value={cat}>
-              {cat}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        {/* Rule Description Dropdown */}
+        <FormControl sx={{ width: "300px" }} variant="outlined" required>
+          <InputLabel id="rule-description-label">Column Rule Description</InputLabel>
+          <Select
+            labelId="rule-description-label"
+            value={ruleDescription}
+            onChange={(e) => setRuleDescription(e.target.value)}
+            label="Column Rule Description *"
+            disabled={!category} // Disable until a category is selected
+          >
+            {filteredRules.map((rule, index) => (
+              <MenuItem key={index} value={rule.rule_description}>
+                {rule.rule_description}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
-      {/* Rule Description Dropdown */}
-      <FormControl sx={{ width: "400px", mb: 3 }} variant="outlined" required>
-        <InputLabel id="rule-description-label">Column Rule Description *</InputLabel>
-        <Select
-          labelId="rule-description-label"
-          value={ruleDescription}
-          onChange={(e) => setRuleDescription(e.target.value)}
-          label="Column Rule Description *"
-          disabled={!category} // Disable until a category is selected
-        >
-          {filteredRules.map((rule, index) => (
-            <MenuItem key={index} value={rule.rule_description}>
-              {rule.rule_description}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {/* Inputs in two rows */}
+      <Box display="flex" gap={4} justifyContent="center" mb={3}>
+        {/* Table Name Input */}
+        <TextField
+          label="Table Name"
+          variant="outlined"
+          sx={{ width: "300px" }}
+          value={tableName}
+          onChange={(e) => setTableName(e.target.value)}
+          required
+        />
 
-      {/* Table Name Input */}
-      <TextField
-        label="Table Name *"
-        variant="outlined"
-        sx={{ width: "400px", mb: 3 }}
-        value={tableName}
-        onChange={(e) => setTableName(e.target.value)}
-        required
-      />
+        {/* Column Name Input */}
+        <TextField
+          label="Column Name"
+          variant="outlined"
+          sx={{ width: "300px" }}
+          value={columnName}
+          onChange={(e) => setColumnName(e.target.value)}
+          required
+        />
+      </Box>
 
-      {/* Column Name Input */}
-      <TextField
-        label="Column Name *"
-        variant="outlined"
-        sx={{ width: "400px", mb: 3 }}
-        value={columnName}
-        onChange={(e) => setColumnName(e.target.value)}
-        required
-      />
-
-      {/* Column Rule Parameter Input */}
+      {/* Column Rule Parameter Input (left aligned) */}
       <TextField
         label="Column Rule Parameter (Optional)"
         variant="outlined"
-        sx={{ width: "400px", mb: 3 }}
+        sx={{ width: "630px", textAlign: "left" }} // Left aligned text
         value={columnRuleParameter}
         onChange={(e) => setColumnRuleParameter(e.target.value)}
       />
 
-      {/* Submit Button */}
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        sx={{ mt: 4 }}
-        onClick={handleSubmit}
-      >
-        {editingIndex !== null ? "Update" : "Submit"}
-      </Button>
+      {/* Submit and Cancel Buttons */}
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          sx={{ mt: 4 }}
+          onClick={handleSubmit}
+        >
+          {editingIndex !== null ? "Update" : "Submit"}
+        </Button>
 
-      {/* Message after submission */}
-      {isSubmitted && (
-        <Typography variant="body1" color="textSecondary" mt={4}>
-          Scroll down to see the output!
-        </Typography>
-      )}
+        {editingIndex !== null && (
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="large"
+            sx={{ mt: 4 }}
+            onClick={handleCancelEdit}
+          >
+            Cancel
+          </Button>
+        )}
+      </Box>
 
       {/* Table to display submitted values */}
-      {isSubmitted && (
-        <Box mt={5} width="100%" overflow="auto">
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell><strong>Category</strong></TableCell>
-                  <TableCell><strong>Rule Description</strong></TableCell>
-                  <TableCell><strong>Table Name</strong></TableCell>
-                  <TableCell><strong>Column Name</strong></TableCell>
-                  <TableCell><strong>Column Rule Parameter</strong></TableCell>
-                  <TableCell><strong>Actions</strong></TableCell>
+      <Box mt={5} width="100%" overflow="auto">
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow >
+                <TableCell sx={{fontWeight:"bold",}}>Category</TableCell>
+                <TableCell sx={{fontWeight:"bold",}}>Column Rule Description</TableCell>
+                <TableCell sx={{fontWeight:"bold",}}>Table Name</TableCell>
+                <TableCell sx={{fontWeight:"bold",}}>Column Name</TableCell>
+                <TableCell sx={{fontWeight:"bold",}}>Column Rule Parameter</TableCell>
+                <TableCell sx={{fontWeight:"bold",}}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {submittedData.map((data, index) => (
+                <TableRow key={index}>
+                  <TableCell>{data.category}</TableCell>
+                  <TableCell>{data.rule_description}</TableCell>
+                  <TableCell>{data.table_name}</TableCell>
+                  <TableCell>{data.column_name}</TableCell>
+                  <TableCell>{data.column_rule_parameter || "-"}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleEdit(index)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {submittedData.map((data, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{data.category}</TableCell>
-                    <TableCell>{data.rule_description}</TableCell>
-                    <TableCell>{data.table_name}</TableCell>
-                    <TableCell>{data.column_name}</TableCell>
-                    <TableCell>{data.column_rule_parameter === null ? "null" : data.column_rule_parameter}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => handleEdit(index)}>
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+
+      {/* Submission Confirmation */}
+      {isSubmitted && (
+        <Typography color="success" variant="body1" mt={3}>
+          Your changes have been saved successfully!
+        </Typography>
       )}
     </Box>
   );

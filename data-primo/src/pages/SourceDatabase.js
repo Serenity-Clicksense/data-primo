@@ -21,7 +21,7 @@ function SourceDatabase() {
     { name: "SQL Server", fileTypes: [".sql"] },
     { name: "Oracle Database", fileTypes: [".sql"] },
     { name: "Amazon S3", fileTypes: [".json", ".csv"] },
-    { name: "Amazon EC2", fileTypes: [".pem", ".key"] },
+    { name: "Google Cloud SQL", fileTypes: [".pem", ".key"] },
     { name: "Amazon RDS", fileTypes: [".sql"] },
   ];
 
