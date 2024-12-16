@@ -1,11 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Typography, TextField, IconButton, List, ListItem, ListItemText, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
-// Default initial rules (used when no data is found in localStorage)
 const initialRules = [
   {
     rule_description: "Check for alphabetic data",
@@ -213,9 +225,9 @@ function ManageRules() {
             height: "40px",
           }}
         >
-          <Box sx={{ width: "35%", ml: 2 }}>Rule Description</Box>
-          <Box sx={{ width: "30%" }}>Category</Box>
-          <Box sx={{ width: "30%" }}>Rule Query</Box>
+          <Box sx={{ width: "30%", ml: 2 }}>Rule Description</Box>
+          <Box sx={{ width: "20%" }}>Category</Box>
+          <Box sx={{ width: "40%" }}>Rule Query</Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mr: 6 }}>Actions</Box>
         </Box>
 
@@ -238,14 +250,38 @@ function ManageRules() {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ width: "35%" }}>
+              <Box sx={{ width: "30%" }}>
                 <ListItemText primary={rule.rule_description} />
               </Box>
-              <Box sx={{ width: "30%" }}>
+              <Box sx={{ width: "20%" }}>
                 <ListItemText secondary={rule.category} />
               </Box>
-              <Box sx={{ width: "30%" }}>
-                <Typography variant="body2" color="textSecondary" sx={{ whiteSpace: "pre-wrap" }}>
+              <Box sx={{ width: "40%" }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{
+                    whiteSpace: "pre-wrap",
+                    overflowY: "auto",
+                    maxHeight: "80px", // Set a fixed height for the rule query
+                    display: "block",
+                    "&::-webkit-scrollbar": {
+                      width: "6px", // Make the scrollbar thinner
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1", // Scrollbar track color
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888", // Scrollbar thumb color
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555", // Scrollbar thumb hover color
+                    },
+                    scrollbarWidth: "thin", // For Firefox
+                  }}
+                >
                   {rule.rule_query}
                 </Typography>
               </Box>
