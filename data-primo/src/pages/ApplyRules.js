@@ -8,7 +8,16 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 // Default initial rules
 const initialRules = [
@@ -33,15 +42,23 @@ function ApplyRules() {
   // States for categories, rules, and filtered rules
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
-  const [allRules, setAllRules] = useState([]); // All rules loaded from localStorage or initialRules
-  const [filteredRules, setFilteredRules] = useState([]); // Rules filtered by selected category
+  const [allRules, setAllRules] = useState([]);
+  const [filteredRules, setFilteredRules] = useState([]);
   const [ruleDescription, setRuleDescription] = useState("");
 
   // Other form states
   const [tableName, setTableName] = useState("");
   const [columnName, setColumnName] = useState("");
-  const [columnRuleDescription, setColumnRuleDescription] = useState("");
   const [columnRuleParameter, setColumnRuleParameter] = useState("");
+
+  // State to hold submitted data
+  const [submittedData, setSubmittedData] = useState([]);
+
+  // State to track if we're editing an entry
+  const [editingIndex, setEditingIndex] = useState(null);
+
+  // State for form submission message and table visibility
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Load initial data into state when the component mounts
   useEffect(() => {
@@ -49,9 +66,11 @@ function ApplyRules() {
     const storedCategories =
       JSON.parse(localStorage.getItem("categories")) ||
       [...new Set(storedRules.map((rule) => rule.category))];
+    const storedData = JSON.parse(localStorage.getItem("submittedData")) || [];
 
-    setAllRules(storedRules); // Load all rules
-    setCategories(storedCategories); // Load all categories
+    setAllRules(storedRules);
+    setCategories(storedCategories);
+    setSubmittedData(storedData);
   }, []);
 
   // Update filtered rules based on selected category
@@ -60,22 +79,62 @@ function ApplyRules() {
       const filtered = allRules.filter((rule) => rule.category === category);
       setFilteredRules(filtered);
     } else {
-      setFilteredRules([]); // Clear the filtered rules if no category is selected
+      setFilteredRules([]);
     }
   }, [category, allRules]);
 
   // Handle form submission
   const handleSubmit = () => {
+    if (!category || !ruleDescription || !tableName || !columnName) {
+      alert("Please fill in all mandatory fields.");
+      return;
+    }
+
     const formData = {
       category,
       rule_description: ruleDescription,
       table_name: tableName,
       column_name: columnName,
-      // column_rule_description: columnRuleDescription,
-      column_rule_parameter: columnRuleParameter,
+      column_rule_parameter: columnRuleParameter || null, // Default to null if empty
     };
 
-    alert(JSON.stringify(formData, null, 2));
+    let updatedData = [...submittedData];
+
+    if (editingIndex !== null) {
+      // Update existing entry
+      updatedData[editingIndex] = formData;
+      setEditingIndex(null); // Reset editing index
+    } else {
+      // Add new entry
+      updatedData.push(formData);
+    }
+
+    // Save updated data to localStorage
+    localStorage.setItem("submittedData", JSON.stringify(updatedData));
+
+    // Update state with the new list
+    setSubmittedData(updatedData);
+
+    // Reset form fields after submission
+    setCategory("");
+    setRuleDescription("");
+    setTableName("");
+    setColumnName("");
+    setColumnRuleParameter("");
+
+    // Set submission state
+    setIsSubmitted(true);
+  };
+
+  // Handle editing an entry
+  const handleEdit = (index) => {
+    const dataToEdit = submittedData[index];
+    setCategory(dataToEdit.category);
+    setRuleDescription(dataToEdit.rule_description);
+    setTableName(dataToEdit.table_name);
+    setColumnName(dataToEdit.column_name);
+    setColumnRuleParameter(dataToEdit.column_rule_parameter);
+    setEditingIndex(index); // Set the index to indicate we're editing
   };
 
   return (
@@ -93,13 +152,13 @@ function ApplyRules() {
       </Typography>
 
       {/* Category Dropdown */}
-      <FormControl sx={{ width: "400px", mb: 3 }} variant="outlined">
-        <InputLabel id="category-label">Category</InputLabel>
+      <FormControl sx={{ width: "400px", mb: 3 }} variant="outlined" required>
+        <InputLabel id="category-label">Category *</InputLabel>
         <Select
           labelId="category-label"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          label="Category"
+          label="Category *"
         >
           {categories.map((cat, index) => (
             <MenuItem key={index} value={cat}>
@@ -110,13 +169,13 @@ function ApplyRules() {
       </FormControl>
 
       {/* Rule Description Dropdown */}
-      <FormControl sx={{ width: "400px", mb: 3 }} variant="outlined">
-        <InputLabel id="rule-description-label">Column Rule Description</InputLabel>
+      <FormControl sx={{ width: "400px", mb: 3 }} variant="outlined" required>
+        <InputLabel id="rule-description-label">Column Rule Description *</InputLabel>
         <Select
           labelId="rule-description-label"
           value={ruleDescription}
           onChange={(e) => setRuleDescription(e.target.value)}
-          label="Rule Description"
+          label="Column Rule Description *"
           disabled={!category} // Disable until a category is selected
         >
           {filteredRules.map((rule, index) => (
@@ -129,34 +188,27 @@ function ApplyRules() {
 
       {/* Table Name Input */}
       <TextField
-        label="Table Name"
+        label="Table Name *"
         variant="outlined"
         sx={{ width: "400px", mb: 3 }}
         value={tableName}
         onChange={(e) => setTableName(e.target.value)}
+        required
       />
 
       {/* Column Name Input */}
       <TextField
-        label="Column Name"
+        label="Column Name *"
         variant="outlined"
         sx={{ width: "400px", mb: 3 }}
         value={columnName}
         onChange={(e) => setColumnName(e.target.value)}
+        required
       />
-
-      {/* Column Rule Description Input */}
-      {/* <TextField
-        label="Column Rule Description"
-        variant="outlined"
-        sx={{ width: "400px", mb: 3 }}
-        value={columnRuleDescription}
-        onChange={(e) => setColumnRuleDescription(e.target.value)}
-      /> */}
 
       {/* Column Rule Parameter Input */}
       <TextField
-        label="Column Rule Parameter"
+        label="Column Rule Parameter (Optional)"
         variant="outlined"
         sx={{ width: "400px", mb: 3 }}
         value={columnRuleParameter}
@@ -171,8 +223,51 @@ function ApplyRules() {
         sx={{ mt: 4 }}
         onClick={handleSubmit}
       >
-        Submit
+        {editingIndex !== null ? "Update" : "Submit"}
       </Button>
+
+      {/* Message after submission */}
+      {isSubmitted && (
+        <Typography variant="body1" color="textSecondary" mt={4}>
+          Scroll down to see the output!
+        </Typography>
+      )}
+
+      {/* Table to display submitted values */}
+      {isSubmitted && (
+        <Box mt={5} width="100%" overflow="auto">
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><strong>Category</strong></TableCell>
+                  <TableCell><strong>Rule Description</strong></TableCell>
+                  <TableCell><strong>Table Name</strong></TableCell>
+                  <TableCell><strong>Column Name</strong></TableCell>
+                  <TableCell><strong>Column Rule Parameter</strong></TableCell>
+                  <TableCell><strong>Actions</strong></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {submittedData.map((data, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{data.category}</TableCell>
+                    <TableCell>{data.rule_description}</TableCell>
+                    <TableCell>{data.table_name}</TableCell>
+                    <TableCell>{data.column_name}</TableCell>
+                    <TableCell>{data.column_rule_parameter === null ? "null" : data.column_rule_parameter}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleEdit(index)}>
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      )}
     </Box>
   );
 }

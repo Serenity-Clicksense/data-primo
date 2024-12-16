@@ -1,13 +1,11 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Card } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CategoryIcon from "@mui/icons-material/Category";
 import DatabaseIcon from "@mui/icons-material/Storage";
 import GavelIcon from "@mui/icons-material/Gavel";
 import { useNavigate } from "react-router-dom";
 import logo1 from "../assets/logo1.png";
-
-
 
 function Home() {
   const navigate = useNavigate();
@@ -21,8 +19,8 @@ function Home() {
   const handleApplyRules = () => {
     navigate("/applyRules");
   };
-  const handleManageDatabaseConnection = () => {
-    navigate("/manageDatabaseConnection");
+  const handleSourceDatabase = () => {
+    navigate("/SourceDatabase");
   };
 
   return (
@@ -30,33 +28,97 @@ function Home() {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      minHeight="100vh"
+      justifyContent="center"
+      minHeight="75vh" // This makes sure the height takes the full screen
       bgcolor="#f9f9f9"
+      p={3}
+      overflow="hidden" // Prevents scrolling
     >
-      {/* Header */}
-      <Box display="flex" justifyContent="center" alignItems="center" mb={4}>
+      {/* Welcome Header */}
+      <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
         <Typography variant="h4" textAlign="center" fontWeight="bold" mr={1}>
           Welcome to
         </Typography>
-        {/* <Box
-          width={175}
-          height={50}
-          bgcolor="black"
-          color="white"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          fontWeight="bold"
-          fontSize={30}
-          borderRadius={4}
-        >
-          Dataprimo
-        </Box> */}
         <img
-            src={logo1}  // Using the imported logo here
-            alt="Dataprimo"
-            style={{ height: '50px', width:'auto', marginLeft:"-30px" }}  // Adjust size as needed
+          src={logo1}
+          alt="Dataprimo"
+          style={{ height: "50px", width: "auto", marginLeft: "-30px" }}
         />
+      </Box>
+
+      {/* Vision, Tagline, and Mission Section */}
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={4}
+        mb={5}
+      >
+        {/* Vision Card */}
+        <Card
+          sx={{
+            width: "220px", // Same width as buttons
+            height: "180px", // Same height as buttons
+            boxShadow: 3,
+            borderRadius: "12px",
+            p: 2,
+            textAlign: "center",
+            backgroundColor: "#e3f2fd", // Light blue
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            color="#1976D2" // Dark blue text
+            mb={2}
+            sx={{ textTransform: "uppercase" }}
+          >
+            Vision
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            "To be the trusted source of accurate and reliable data, empowering
+            informed decisions and driving business excellence."
+          </Typography>
+        </Card>
+
+        {/* Tagline */}
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          textAlign="center"
+          color="textSecondary"
+          sx={{ minWidth: 200 }}
+        >
+          Your Data in Focus
+        </Typography>
+
+        {/* Mission Card */}
+        <Card
+          sx={{
+            width: "220px", // Same width as buttons
+            height: "180px", // Same height as buttons
+            boxShadow: 3,
+            borderRadius: "12px",
+            p: 2,
+            textAlign: "center",
+            backgroundColor: "#e8f5e9", // Light green
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            color="#2E7D32" // Dark green text
+            mb={2}
+            sx={{ textTransform: "uppercase" }}
+          >
+            Mission
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            "To ensure the highest standards of data integrity and accuracy
+            through continuous improvement, innovative solutions, and a
+            commitment to excellence in data management."
+          </Typography>
+        </Card>
       </Box>
 
       {/* Buttons Section */}
@@ -64,17 +126,18 @@ function Home() {
         display="flex"
         justifyContent="center"
         gap={4}
-        flexWrap="wrap"
-        maxWidth="800px"
+        flexWrap="nowrap"
         mt={2}
+        maxWidth="100%"
+        overflow="hidden"
       >
-        {/* Add Rules Button */}
+        {/* Manage Rules */}
         <Button
           variant="contained"
           color="primary"
           sx={{
             height: "180px",
-            width: "220px",
+            width: "220px", // Same size as cards
             fontSize: "18px",
             display: "flex",
             flexDirection: "column",
@@ -83,9 +146,7 @@ function Home() {
             textTransform: "capitalize",
             transition: "transform 0.3s ease",
             background: "linear-gradient(90deg, #56CCF2, #2F80ED)",
-            "&:hover": {
-              transform: "scale(1.1)", // Zoom effect
-            },
+            "&:hover": { transform: "scale(1.05)" },
           }}
           onClick={handleManageRules}
         >
@@ -93,12 +154,12 @@ function Home() {
           Manage Rules
         </Button>
 
-        {/* Manage Categories Button */}
+        {/* Manage Categories */}
         <Button
           variant="contained"
           sx={{
             height: "180px",
-            width: "220px",
+            width: "220px", // Same size as cards
             fontSize: "18px",
             display: "flex",
             flexDirection: "column",
@@ -107,9 +168,7 @@ function Home() {
             textTransform: "capitalize",
             transition: "transform 0.3s ease",
             background: "linear-gradient(90deg, #56CCF2, #2F80ED)",
-            "&:hover": {
-              transform: "scale(1.1)", // Zoom effect
-            },
+            "&:hover": { transform: "scale(1.05)" },
           }}
           onClick={handleManageCategories}
         >
@@ -117,13 +176,13 @@ function Home() {
           Manage Categories
         </Button>
 
-        {/* Manage Database Button */}
+        {/* Source Database */}
         <Button
           variant="contained"
           color="secondary"
           sx={{
             height: "180px",
-            width: "220px",
+            width: "220px", // Same size as cards
             fontSize: "18px",
             display: "flex",
             flexDirection: "column",
@@ -132,23 +191,21 @@ function Home() {
             textTransform: "capitalize",
             transition: "transform 0.3s ease",
             background: "linear-gradient(90deg, #56CCF2, #2F80ED)",
-            "&:hover": {
-              transform: "scale(1.1)", // Zoom effect
-            },
+            "&:hover": { transform: "scale(1.05)" },
           }}
-          onClick={handleManageDatabaseConnection}
+          onClick={handleSourceDatabase}
         >
           <DatabaseIcon sx={{ fontSize: 50, mb: 1 }} />
-          Manage Database
+          Source Database
         </Button>
 
-        {/* Apply Rules Button */}
+        {/* Apply Rules */}
         <Button
           variant="contained"
           color="success"
           sx={{
             height: "180px",
-            width: "220px",
+            width: "220px", // Same size as cards
             fontSize: "18px",
             display: "flex",
             flexDirection: "column",
@@ -157,9 +214,7 @@ function Home() {
             textTransform: "capitalize",
             transition: "transform 0.3s ease",
             background: "linear-gradient(90deg, #56CCF2, #2F80ED)",
-            "&:hover": {
-              transform: "scale(1.1)", // Zoom effect
-            },
+            "&:hover": { transform: "scale(1.05)" },
           }}
           onClick={handleApplyRules}
         >

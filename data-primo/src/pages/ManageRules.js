@@ -1,5 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Typography, TextField, IconButton, List, ListItem, ListItemText, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -26,61 +39,6 @@ const initialRules = [
     rule_description: "Date format MM/DD/YY",
     rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{2}/[0-9]{2}/[0-9]{2}$',1,0)) as passed_records from temp_view;",
     category: "Date Format Checks"
-  },
-  {
-    rule_description: "Date format YYYY-MM-DD",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$',1,0)) as passed_records from temp_view;",
-    category: "Date Format Checks"
-  },
-  {
-    rule_description: "Email check",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ REGEXP '[a-zA-Z0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',0,1)) as failed_records, sum(if(@column_name@ REGEXP '[a-zA0-9.%+-]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$',1,0)) as passed_records from temp_view;",
-    category: "Pattern Checks"
-  },
-  {
-    rule_description: "Empty check",
-    rule_query: "select count(*) as total_records, sum(if(@column_name@='',1,0)) as failed_records, sum(if(@column_name@='',0,1)) as passed_records from temp_view;",
-    category: "Data Integrity Checks"
-  },
-  {
-    rule_description: "Greater than",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ > @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ > @parameter_1@, 1, 0)) as passed_records from temp_view;",
-    category: "Comparison Checks"
-  },
-  {
-    rule_description: "Greater than or equal",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ >= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ >= @parameter_1@, 1,0)) as passed_records from temp_view;",
-    category: "Comparison Checks"
-  },
-  {
-    rule_description: "Less than",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ < @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ < @parameter_1@, 1, 0)) as passed_records from temp_view;",
-    category: "Comparison Checks"
-  },
-  {
-    rule_description: "Less than or equal",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ <= @parameter_1@, 0, 1)) as failed_records, sum(if(@column_name@ <= @parameter_1@, 1, 0)) as passed_records from temp_view;",
-    category: "Comparison Checks"
-  },
-  {
-    rule_description: "Not equal",
-    rule_query: "select count(*) as total_records,sum(if(@column_name@ <> @parameter_1@, 1, 0)) as failed_records, sum(if(@column_name@ <> @parameter_1@, 0, 1)) as passed_records from temp_view;",
-    category: "Comparison Checks"
-  },
-  {
-    rule_description: "Null check",
-    rule_query: "select count(*) as total_records, sum(if(@column_name@ is null,1,0)) as failed_records, sum(if(@column_name@ is not null,1,0)) as passed_records from temp_view;",
-    category: "Data Integrity Checks"
-  },
-  {
-    rule_description: "Unique check",
-    rule_query: "select COUNT() AS total_records,COUNT() - COUNT(distinct @column_name@) AS failed_records, COUNT(distinct @column_name@) AS passed_records FROM temp_view;",
-    category: "Data Integrity Checks"
-  },
-  {
-    rule_description: "Custom check",
-    rule_query: "This is only a placeholder, as this won’t be parsed during execution.",
-    category: "Custom Checks"
   }
 ];
 
@@ -213,9 +171,9 @@ function ManageRules() {
             height: "40px",
           }}
         >
-          <Box sx={{ width: "35%", ml: 2 }}>Rule Description</Box>
-          <Box sx={{ width: "30%" }}>Category</Box>
-          <Box sx={{ width: "30%" }}>Rule Query</Box>
+          <Box sx={{ width: "30%", ml: 2 }}>Rule Description</Box>
+          <Box sx={{ width: "20%" }}>Category</Box>
+          <Box sx={{ width: "40%" }}>Rule Query</Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mr: 6 }}>Actions</Box>
         </Box>
 
@@ -238,14 +196,23 @@ function ManageRules() {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ width: "35%" }}>
+              <Box sx={{ width: "30%" }}>
                 <ListItemText primary={rule.rule_description} />
               </Box>
-              <Box sx={{ width: "30%" }}>
+              <Box sx={{ width: "20%" }}>
                 <ListItemText secondary={rule.category} />
               </Box>
-              <Box sx={{ width: "30%" }}>
-                <Typography variant="body2" color="textSecondary" sx={{ whiteSpace: "pre-wrap" }}>
+              <Box sx={{ width: "40%" }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{
+                    whiteSpace: "pre-wrap",
+                    overflowY: "auto",
+                    maxHeight: "60px", // Set a reduced fixed height for the rule query
+                    display: "block",
+                  }}
+                >
                   {rule.rule_query}
                 </Typography>
               </Box>
