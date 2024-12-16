@@ -53,6 +53,25 @@ function Home() {
         alignItems="center"
         gap={4}
         mb={5}
+        mt={-1}
+      >
+        {/* Tagline */}
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            textAlign="center"
+            color="textSecondary"
+            sx={{ minWidth: 200 }}
+          >
+            Your Data in Focus
+          </Typography>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={4}
+        mb={5}
       >
         {/* Vision Card */}
         <Card
@@ -111,24 +130,7 @@ function Home() {
           </Typography>
         </Card>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        gap={4}
-        mb={5}
-      >
-        {/* Tagline */}
-          <Typography
-            variant="h5"
-            fontWeight="bold"
-            textAlign="center"
-            color="textSecondary"
-            sx={{ minWidth: 200 }}
-          >
-            Your Data in Focus
-          </Typography>
-      </Box>
+      
               
 
       {/* Buttons Section */}
