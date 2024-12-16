@@ -71,7 +71,7 @@ function ApplyRules() {
       rule_description: ruleDescription,
       table_name: tableName,
       column_name: columnName,
-      column_rule_description: columnRuleDescription,
+      // column_rule_description: columnRuleDescription,
       column_rule_parameter: columnRuleParameter,
     };
 
